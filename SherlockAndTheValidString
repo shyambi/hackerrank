@@ -1,0 +1,62 @@
+'''
+Sherlock considers a string, , to be valid if either of the following conditions are satisfied:
+
+All characters in  have the same exact frequency (i.e., occur the same number of times). For example,  is valid, but  is not valid.
+Deleting exactly  character from  will result in all its characters having the same frequency. For example,  and  are valid because all their letters will have the same frequency if we remove  occurrence of c, but  is not valid because we'd need to remove  characters.
+Given , can you determine if it's valid or not? If it's valid, print YES on a new line; otherwise, print NO instead.
+
+https://www.hackerrank.com/challenges/sherlock-and-valid-string/problem
+'''
+
+
+#!/bin/python3
+
+import sys
+
+def isValid(s):
+    # Complete this function
+    if(len(s) <= 2 ) : return "YES"
+    freq = [0 for i in range(26)]
+    s=list(s)
+    for i in range(len(s)) :
+        freq[ord(s[i])-ord('a')] +=1
+    filt_freq=list(filter(lambda x: x>0, freq))
+    #print(filt_freq)
+    l = len(filt_freq)
+    if(l == 1): return "YES"
+    if(l == 2):
+        y0=filt_freq[0]
+        y1=filt_freq[1]
+        if((y0 == y1) or (abs(y0-y1) == 1) or (y0 == 1) or (y1==1)): return "YES"
+        else: return "NO"
+        
+    x1=filt_freq[0]
+    x2=filt_freq[1]
+    x3=filt_freq[2]
+    wild_card=0;
+    if((x1 == x2) and (x2 == x3)): 
+        x = x1
+        wild_card = 1
+    elif((x1 == x2) and (((x3 - x1) == 1) or (x3 == 1))): x = x1;
+    elif((x1 == x3) and (((x2 - x1) == 1) or (x2 == 1))): x = x1;
+    elif((x2 == x3) and (((x1 - x2) == 1) or (x1 == 1))): x = x2;
+    else: return "NO"
+    
+    if(l == 3): return "YES"
+    
+    for i in range(3, len(filt_freq)):
+        if(filt_freq[i] != x): 
+            if((((filt_freq[i]-x) == 1) or (filt_freq[i] == 1)) and (wild_card == 1)): 
+                wild_card = 0
+            else: 
+                return "NO"
+        else:
+            continue
+    return "YES"
+    
+            
+            
+            
+s = input().strip()
+result = isValid(s)
+print(result)
