@@ -1,0 +1,70 @@
+'''
+Sandy likes palindromes. A palindrome is a word, phrase, number, or other sequence of characters which reads the same backward as it does forward. For example, madam is a palindrome.
+
+On her  birthday, Sandy's uncle, Richie Rich, offered her an -digit check which she refused because the number was not a palindrome. Richie then challenged Sandy to make the number palindromic by changing no more than digits. Sandy can only change  digit at a time, and cannot add digits to (or remove digits from) the number.
+
+Given  and an -digit number, help Sandy determine the largest possible number she can make by changing digits.
+
+Note: Treat the integers as numeric strings. Leading zeros are permitted and can't be ignored (So 0011 is not a palindrome, 0110 is a valid palindrome). A digit can be modified more than once.
+
+Input Format
+
+The first line contains two space-separated integers,  (the number of digits in the number) and  (the maximum number of digits that can be altered), respectively. 
+The second line contains an -digit string of numbers that Sandy must attempt to make palindromic.
+
+Constraints
+
+Each character  in the number is an integer where .
+Output Format
+
+Print a single line with the largest number that can be made by changing no more than  digits; if this is not possible, print -1
+'''
+
+
+#!/bin/python3
+
+import sys
+
+def richieRich(s, n, k):
+    # Complete this function
+    x=int(n/2)
+    s=list(map(int,s))
+    nmd=0  ##Not matching digits, these are the number of digits that needs to be changed to make the string palindrome
+    for i in range(x):
+        if(s[i] != s[n-i-1]): nmd += 1;
+    cd = [ 0 for i in range(n)]   ##Track changed digits through a list of length n        
+    if(k < nmd): return "-1"
+    else:
+        cc=0    ##cc: Number of digits changed in following loop
+        for i in range(x):
+            if(cc == k): break
+            if(s[i] != s[n-i-1]):
+                if(s[i] > s[n-i-1]):
+                    z=n-i-1
+                    s[n-i-1] = s[i]
+                else:
+                    s[i] = s[n-i-1]
+                cc += 1
+                cd[i] = 1         
+    rc=k-cc   ##rc: remaining chances to change digits
+    for i in range(x):
+        if(rc <= 0): break
+        if(s[i] != 9):
+            change_req=2-cd[i];
+            if(change_req > rc): continue
+            else:
+                s[i] = 9
+                s[n-i-1] = 9
+                rc -= change_req     
+    if(rc > 0):
+        s[x] = 9
+    st = ""  
+    st = ''.join(str(v) for v in s)
+    return(st)   
+
+input_data = list(map(int, input().split()))
+n=input_data[0]
+k=input_data[1]
+s = input().strip()
+result = richieRich(s, n, k)
+print(result)
