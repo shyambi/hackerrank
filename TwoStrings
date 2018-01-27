@@ -1,0 +1,39 @@
+'''
+https://www.hackerrank.com/challenges/two-strings/problem
+Given two strings,  and , determine if they share a common substring.
+
+Input Format
+
+The first line contains a single integer, , denoting the number of  pairs you must check. 
+Each pair is defined over two lines:
+
+The first line contains string .
+The second line contains string .
+Constraints
+
+ and  consist of lowercase English letters only.
+Output Format
+
+For each  pair of strings, print YES on a new line if the two strings share a common substring; if no such common substring exists, print NO on a new line.
+'''
+
+#!/bin/python3
+
+import sys
+
+def twoStrings(s1, s2):
+    # Complete this function
+    s3=set(s1)
+    s4=set(s2)
+    s5=s3.intersection(s4)
+    if (len(s5) > 0) :
+        return "YES" 
+    else :
+        return "NO"
+
+q = int(input().strip())
+for a0 in range(q):
+    s1 = input().strip()
+    s2 = input().strip()
+    result = twoStrings(s1, s2)
+    print(result)
